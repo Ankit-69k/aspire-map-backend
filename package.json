@@ -11,7 +11,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:generate": "npx prisma generate",
+    "db:migrate": "npx prisma migrate dev",
+    "db:studio": "npx prisma studio",
+    "db:push": "npx prisma db push"
   },
   "repository": {
     "type": "git",
@@ -40,7 +44,9 @@
     "typescript-eslint": "^8.44.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.16.2",
     "dotenv": "^17.2.2",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "prisma": "^6.16.2"
   }
 }

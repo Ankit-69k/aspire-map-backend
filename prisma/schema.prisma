@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// Student Model
+model Student {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  password    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  profiles    Profile[]
+  skills      StudentSkill[]
+  roadmaps    Roadmap[]
+}
+
+// Profile captures background & resume parsing
+model Profile {
+  id           String   @id @default(uuid())
+  studentId    String
+  education    String?
+  subjects     String[]
+  certifications String[]
+  projects     String[]
+  internships  String[]
+  hobbies      String[]
+  resumeUrl    String?   // uploaded resume
+  linkedInUrl  String?   // optional
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  student      Student   @relation(fields: [studentId], references: [id])
+}
+
+// Skills master table
+model Skill {
+  id        String   @id @default(uuid())
+  name      String
+  category  String
+  createdAt DateTime @default(now())
+
+  // Relations
+  students  StudentSkill[]
+  careers   CareerSkill[]
+  roadmapSteps RoadmapStep[]
+}
+
+// Junction: Student ↔ Skill with proficiency
+model StudentSkill {
+  id        String   @id @default(uuid())
+  studentId String
+  skillId   String
+  level     Int?      // 1–5 rating or years of exp
+  detected  Boolean   @default(false) // auto-detected vs self-added
+  createdAt DateTime  @default(now())
+
+  student   Student   @relation(fields: [studentId], references: [id])
+  skill     Skill     @relation(fields: [skillId], references: [id])
+}
+
+// Career role definitions (Data Scientist, PM, etc.)
+model Career {
+  id        String   @id @default(uuid())
+  title     String
+  description String?
+  industry  String?
+  emerging  Boolean   @default(false) // flag for future-proof careers
+  createdAt DateTime  @default(now())
+
+  // Relations
+  requiredSkills CareerSkill[]
+  roadmaps       Roadmap[]
+}
+
+// Junction: Career ↔ Required Skills
+model CareerSkill {
+  id        String   @id @default(uuid())
+  careerId  String
+  skillId   String
+  importance Int     // 1–5 weight of importance
+
+  career    Career   @relation(fields: [careerId], references: [id])
+  skill     Skill    @relation(fields: [skillId], references: [id])
+}
+
+// Roadmap (personalized per student-career)
+model Roadmap {
+  id         String   @id @default(uuid())
+  studentId  String
+  careerId   String
+  status     String   @default("draft") // draft, in-progress, completed
+  timeline   String?  // e.g., "3–6 months"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  student    Student  @relation(fields: [studentId], references: [id])
+  career     Career   @relation(fields: [careerId], references: [id])
+  steps      RoadmapStep[]
+}
+
+// Steps in the roadmap (courses, projects, etc.)
+model RoadmapStep {
+  id        String   @id @default(uuid())
+  roadmapId String
+  skillId   String?
+  type      String   // course, project, certification, internship, interview_prep
+  title     String
+  provider  String?  // e.g., Coursera, Udemy
+  url       String?
+  order     Int
+  completed Boolean  @default(false)
+
+  roadmap   Roadmap  @relation(fields: [roadmapId], references: [id])
+  skill     Skill?   @relation(fields: [skillId], references: [id])
+}
+
