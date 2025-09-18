@@ -5,7 +5,7 @@
   "main": "index.js",
   "imports": {
     "#config/*": "./src/config/*",
-    "#controllers/*": "./src/controllers/*",
+    "#handler/*": "./src/handler/*",
     "#middleware/*": "./src/middleware/*",
     "#models/*": "./src/models/*",
     "#routes/*": "./src/routes/*",
@@ -42,6 +42,7 @@
   "devDependencies": {
     "@eslint/js": "^9.35.0",
     "@tsconfig/node22": "^22.0.2",
+    "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
@@ -58,6 +59,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",

@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { studentRoutes } from '#routes/index.ts';
 
 const app = express();
 
@@ -23,5 +24,21 @@ app.get('/', (req, res) => {
   logger.info('Response sent');
   res.send('Hello Duniya!');
 });
+
+app.get('/health', (req, res) => {
+  logger.info('Health check OK');
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
+});
+
+app.get('/api', (req, res) => {
+  logger.info('API endpoint hit');
+  res.status(200).json({ message: 'API is working!' });
+});
+
+app.use('/student', studentRoutes);
 
 export default app;
