@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { studentRoutes } from '#routes/index.ts';
+import { llmRoutes, studentRoutes } from '#routes/index.ts';
 
 const app = express();
 
@@ -40,5 +40,6 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/student', studentRoutes);
+app.use('/llm', llmRoutes);
 
 export default app;

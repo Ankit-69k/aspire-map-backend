@@ -10,3 +10,7 @@
 {"level":"info","message":"::1 - - [18/Sep/2025:08:52:16 +0000] \"POST /student/ HTTP/1.1\" 201 627 \"-\" \"PostmanRuntime/7.46.0\"","service":"user-service"}
 {"level":"info","message":"Student retrieved successfully","service":"user-service","studentId":"f061d2ec-6190-4173-9920-4d64b1e8d9ad"}
 {"level":"info","message":"::1 - - [18/Sep/2025:08:53:37 +0000] \"GET /student/f061d2ec-6190-4173-9920-4d64b1e8d9ad HTTP/1.1\" 200 729 \"-\" \"PostmanRuntime/7.46.0\"","service":"user-service"}
+{"level":"info","message":"::1 - - [18/Sep/2025:17:44:01 +0000] \"POST /llm/resumeUpload HTTP/1.1\" 200 1915 \"-\" \"PostmanRuntime/7.46.0\"","service":"user-service"}
+{"level":"error","message":"Error parsing resume Invalid JSON returned from LLM","service":"user-service","stack":"Error: Invalid JSON returned from LLM\n    at LLMService.parseResume (/home/ankitkr/hackathon/aspire-map-backend/src/services/llm.service.ts:42:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async LLMHandler.parseResume (/home/ankitkr/hackathon/aspire-map-backend/src/handler/llm.handler.ts:21:23)"}
+{"level":"info","message":"::1 - - [18/Sep/2025:17:47:14 +0000] \"POST /llm/resumeUpload HTTP/1.1\" 400 114 \"-\" \"PostmanRuntime/7.46.0\"","service":"user-service"}
+{"level":"info","message":"::1 - - [18/Sep/2025:17:50:18 +0000] \"POST /llm/resumeUpload HTTP/1.1\" 200 1989 \"-\" \"PostmanRuntime/7.46.0\"","service":"user-service"}
