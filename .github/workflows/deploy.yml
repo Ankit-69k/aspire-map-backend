@@ -7,9 +7,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  SERVICE_NAME: backend-service
+  SERVICE_NAME: aspire-map-service
   REGION: us-central1
-  REPOSITORY: backend-repo
+  REPOSITORY: aspire-map-repo
 
 jobs:
   build-deploy:
