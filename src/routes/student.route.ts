@@ -1,4 +1,4 @@
-import studentHandler from '#handler/student.handler.ts';
+import studentHandler from '../handler/student.handler.js';
 import { Router } from 'express';
 
 const router = Router();

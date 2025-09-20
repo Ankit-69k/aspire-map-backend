@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { ApiError } from '#utils/apiError.ts';
-import careerService from '#services/career.service.ts';
-import { ApiResponse } from '#utils/apiResponse.ts';
-import logger from '#config/logger.ts';
+import { ApiError } from '../utils/apiError.js';
+import { ApiResponse } from '../utils/apiResponse.js';
+import careerService from '../services/career.service.js';
+import logger from '../config/logger.js';
 
 class CareerHandler {
   async create(req: Request, res: Response) {

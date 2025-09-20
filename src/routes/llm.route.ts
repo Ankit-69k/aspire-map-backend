@@ -1,4 +1,4 @@
-import llmHandler from '#handler/llm.handler.ts';
+import llmHandler from '../handler/llm.handler.js';
 import { Router } from 'express';
 import multer from 'multer';
 

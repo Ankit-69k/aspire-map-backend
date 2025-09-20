@@ -1,4 +1,4 @@
-import profileHandler from '#handler/profile.handler.ts';
+import profileHandler from '../handler/profile.handler.js';
 import { Router } from 'express';
 
 const router = Router();

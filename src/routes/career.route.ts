@@ -1,4 +1,4 @@
-import careerHandler from '#handler/career.handler.ts';
+import careerHandler from '../handler/career.handler.js';
 import { Router } from 'express';
 
 const router = Router();

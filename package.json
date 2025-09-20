@@ -2,17 +2,7 @@
   "name": "aspire-map-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "imports": {
-    "#config/*": "./src/config/*",
-    "#handler/*": "./src/handler/*",
-    "#middleware/*": "./src/middleware/*",
-    "#models/*": "./src/models/*",
-    "#routes/*": "./src/routes/*",
-    "#services/*": "./src/services/*",
-    "#utils/*": "./src/utils/*",
-    "#validations/*": "./src/validations/*"
-  },
+  "main": "dist/index.js",
   "scripts": {
     "dev": "tsx --watch src/index.ts",
     "start": "node dist/index.js",
@@ -50,6 +40,7 @@
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^24.5.0",
+    "@types/pdf-parse": "^1.1.5",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-perfectionist": "^4.15.0",

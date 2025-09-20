@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import logger from '#config/logger.ts';
-import llmService from '#services/llm.service.ts';
-import { ApiError } from '#utils/apiError.ts';
-import { ApiResponse } from '#utils/apiResponse.ts';
+import logger from '../config/logger.js';
+import llmService from '../services/llm.service.js';
+import { ApiError } from '../utils/apiError.js';
+import { ApiResponse } from '../utils/apiResponse.js';
 import fs from 'fs/promises';
 
 class LLMHandler {

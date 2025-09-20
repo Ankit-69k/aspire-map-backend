@@ -1,5 +1,5 @@
-import prisma from '#config/db.ts';
-import logger from '#config/logger.ts';
+import logger from '../config/logger.js';
+import prisma from '../config/db.js';
 
 class CareerService {
   async createCareer(

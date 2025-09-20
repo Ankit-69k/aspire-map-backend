@@ -1,12 +1,7 @@
-import logger from '#config/logger.ts';
-import prisma from '#config/db.ts';
-import llm from '#config/llm.ts';
-import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
-import { DocxLoader } from '@langchain/community/document_loaders/fs/docx';
-import { getResumeParserPrompt } from '../prompts/resumeParser.ts';
-import { vectorStore } from '#config/vectorDb.ts';
+import logger from '../config/logger.js';
+import prisma from '../config/db.js';
+import { vectorStore } from '../config/vectorDb.js';
 import * as fs from 'fs/promises';
-import * as path from 'path';
 
 interface ProfileData {
   education?: string;

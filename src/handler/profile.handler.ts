@@ -1,7 +1,7 @@
-import logger from '#config/logger.ts';
-import profileService from '#services/profile.service.ts';
-import { ApiError } from '#utils/apiError.ts';
-import { ApiResponse } from '#utils/apiResponse.ts';
+import logger from '../config/logger.js';
+import profileService from '../services/profile.service.js';
+import { ApiError } from '../utils/apiError.js';
+import { ApiResponse } from '../utils/apiResponse.js';
 import { Request, Response } from 'express';
 
 class ProfileHandler {

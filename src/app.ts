@@ -1,5 +1,5 @@
 import express from 'express';
-import logger from '#config/logger.ts';
+import logger from './config/logger.js';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -9,7 +9,7 @@ import {
   profileRoutes,
   studentRoutes,
   careerRoutes,
-} from '#routes/index.ts';
+} from './routes/index.js';
 
 const app = express();
 

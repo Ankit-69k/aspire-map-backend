@@ -1,12 +1,12 @@
-import llm from '#config/llm.ts';
+import llm from '../config/llm.js';
 import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
 import { DocxLoader } from '@langchain/community/document_loaders/fs/docx';
-import { getResumeParserPrompt } from '../prompts/resumeParser.ts';
-import logger from '#config/logger.ts';
-import { vectorStore } from '#config/vectorDb.ts';
-import { getCarrierPrompt } from '../prompts/career.ts';
-import prisma from '#config/db.ts';
-import { getRoadmapPrompt } from '../prompts/roadmap.ts';
+import { getResumeParserPrompt } from '../prompts/resumeParser.js';
+import logger from '../config/logger.js';
+import { vectorStore } from '../config/vectorDb.js';
+import { getCarrierPrompt } from '../prompts/career.js';
+import prisma from '../config/db.js';
+import { getRoadmapPrompt } from '../prompts/roadmap.js';
 
 class LLMService {
   private llm: typeof llm;
