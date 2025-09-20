@@ -52,7 +52,7 @@ jobs:
         run: npm run db:deploy
 
       - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker us-docker.pkg.dev
+        run: gcloud auth configure-docker asia-south1-docker.pkg.dev
 
       - name: Build and Push Docker Image
         run: |
@@ -62,7 +62,7 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy backend-service \
-            --image=us-docker.pkg.dev/${{ env.PROJECT_ID }}/aspire-map-repo/backend-service:${{ github.sha }} \
+            --image=asia-south1-docker.pkg.dev/${{ env.PROJECT_ID }}/aspire-map-repo/backend-service:${{ github.sha }} \
             --platform=managed \
             --region=${{ env.REGION }} \
             --allow-unauthenticated \
