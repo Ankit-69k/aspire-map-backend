@@ -1,4 +1,4 @@
-# Use Node 20 Alpine
+# ---------------- Build Stage ----------------
 FROM node:20-alpine AS build
 
 WORKDIR /app
@@ -6,10 +6,10 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
+# Install all dependencies
 RUN npm ci --legacy-peer-deps
 
-# Copy prisma schema and generate client
+# Copy Prisma schema and generate client
 COPY prisma ./prisma/
 RUN npx prisma generate
 
@@ -19,24 +19,29 @@ COPY . .
 # Build TypeScript
 RUN npm run build
 
-# --- Production image ---
+# ---------------- Production Stage ----------------
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy only production deps + build
+# Copy only production deps
 COPY package*.json ./
 RUN npm ci --only=production --legacy-peer-deps
 
+# Copy built JS files from build stage
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/prisma ./prisma
-COPY --from=build /app/node_modules ./node_modules
+# Copy Prisma client
+COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
 
-# Use non-root user
+# Copy Prisma schema if needed at runtime
+COPY --from=build /app/prisma ./prisma
+
+# Create non-root user
 RUN addgroup app && adduser -S -G app app
 RUN chown -R app:app /app
 USER app
 
+# Expose port Cloud Run expects
 EXPOSE 8080
 
 # Start server
