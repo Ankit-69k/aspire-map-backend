@@ -43,12 +43,20 @@ jobs:
 
       - name: Start Cloud SQL Auth Proxy
         run: |
-          ./cloud_sql_proxy -instances=${{ secrets.DB_INSTANCE_CONNECTION_NAME }}=tcp:5432 &
+          ./cloud_sql_proxy -instances=${{ secrets.DB_INSTANCE_CONNECTION_NAME }}=tcp:5432 \
+            -log_debug_stdout &
+          PROXY_PID=$!
+          echo "PROXY_PID=$PROXY_PID" >> $GITHUB_ENV
+
           # Wait for proxy to be ready
+          echo "Waiting for Cloud SQL Auth Proxy to start..."
           for i in {1..30}; do
             if nc -z localhost 5432; then
-              echo "Cloud SQL Proxy is ready"
+              echo "✅ Cloud SQL Proxy is ready on localhost:5432"
               break
+            elif [ $i -eq 30 ]; then
+              echo "❌ Cloud SQL Proxy failed to start within 60 seconds"
+              exit 1
             fi
             echo "Waiting for Cloud SQL Proxy... ($i/30)"
             sleep 2
@@ -59,11 +67,25 @@ jobs:
 
       - name: Run Prisma migrations
         env:
-          DATABASE_URL: 'postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/${{ secrets.DB_NAME }}?sslmode=require'
+          DATABASE_URL: 'postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/${{ secrets.DB_NAME }}?sslmode=disable'
         run: |
           echo "Running Prisma migrations..."
+          echo "Testing database connection..."
+
+          # Test connection first
+          if npx prisma db execute --stdin <<< "SELECT 1;" 2>/dev/null; then
+            echo "✅ Database connection successful"
+          else
+            echo "❌ Database connection failed"
+            echo "Checking if proxy is still running..."
+            ps aux | grep cloud_sql_proxy || true
+            exit 1
+          fi
+
+          # Run migrations
+          echo "Deploying migrations..."
           npx prisma migrate deploy --schema=./prisma/schema.prisma
-          echo "Migrations completed successfully"
+          echo "✅ Migrations completed successfully"
 
       - name: Stop Cloud SQL Auth Proxy
         run: pkill -f cloud_sql_proxy || true
