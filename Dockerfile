@@ -9,11 +9,13 @@ RUN npm ci --legacy-peer-deps
 # Copy rest of the source
 COPY . .
 
+# Generate Prisma client
+RUN npx prisma generate
+
 # Build TypeScript -> dist/
 RUN npm run build
 
-# Generate Prisma client
-RUN npx prisma generate
+
 
 
 # ---------- Runtime stage ----------
