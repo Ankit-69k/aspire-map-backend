@@ -46,6 +46,8 @@ model Profile {
   updatedAt    DateTime  @updatedAt
 
   student      Student   @relation(fields: [studentId], references: [id])
+  careers        ProfileCareer[]
+
 }
 
 // Skills master table
@@ -74,6 +76,16 @@ model StudentSkill {
   skill     Skill     @relation(fields: [skillId], references: [id])
 }
 
+model ProfileCareer {
+  id        String  @id @default(uuid())
+  profileId String
+  careerId  String
+
+  profile   Profile @relation(fields: [profileId], references: [id])
+  career    Career  @relation(fields: [careerId], references: [id])
+}
+
+
 // Career role definitions (Data Scientist, PM, etc.)
 model Career {
   id        String   @id @default(uuid())
@@ -86,6 +98,7 @@ model Career {
   // Relations
   requiredSkills CareerSkill[]
   roadmaps       Roadmap[]
+  profileLinks   ProfileCareer[]   
 }
 
 // Junction: Career ↔ Required Skills

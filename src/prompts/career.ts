@@ -13,11 +13,12 @@ export const getCarrierPrompt = (
 
         Provide 3 specific career recommendations with:
         1. Job title
-        2. Why it matches their profile
-        3. Required skills to develop
-        4. Industry outlook
-        5. Expected salary range
-
+        2. Job description
+        3. Why it matches their profile
+        4. Required skills to develop
+        5. Industry outlook
+        6. Expected salary range
+        7: Emerging (true/false) -> flag for future-proof careers
         Format as JSON array.
       `;
   return prompt;

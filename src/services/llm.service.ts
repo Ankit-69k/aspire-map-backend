@@ -4,7 +4,7 @@ import { DocxLoader } from '@langchain/community/document_loaders/fs/docx';
 import { getResumeParserPrompt } from '../prompts/resumeParser.ts';
 import logger from '#config/logger.ts';
 import { vectorStore } from '#config/vectorDb.ts';
-import { getCarrierPrompt } from '../prompts/carrier.ts';
+import { getCarrierPrompt } from '../prompts/career.ts';
 import prisma from '#config/db.ts';
 import { getRoadmapPrompt } from '../prompts/roadmap.ts';
 
