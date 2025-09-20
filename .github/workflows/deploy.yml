@@ -152,35 +152,7 @@ jobs:
       - name: Run Prisma Migrations
         env:
           DATABASE_URL: 'postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/${{ secrets.DB_NAME }}?sslmode=disable&connect_timeout=60'
-        run: |
-          echo "=== RUNNING PRISMA MIGRATIONS ==="
-
-          # Test Prisma connection first
-          echo "Testing Prisma connection..."
-          npx prisma db execute --stdin <<< "SELECT 1 as connection_test;" || {
-            echo "❌ Prisma connection test failed"
-            echo "Trying alternative connection string..."
-            
-            # Try with minimal connection string
-            export DATABASE_URL="postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/${{ secrets.DB_NAME }}?sslmode=disable"
-            npx prisma db execute --stdin <<< "SELECT 1 as connection_test;" || {
-              echo "❌ All Prisma connection attempts failed"
-              exit 1
-            }
-          }
-
-          echo "✅ Prisma connection successful"
-
-          # Run migrations
-          echo "Deploying Prisma migrations..."
-          npx prisma migrate deploy || {
-            echo "❌ Migration deployment failed"
-            echo "Checking migration status..."
-            npx prisma migrate status || true
-            exit 1
-          }
-
-          echo "✅ Migrations deployed successfully"
+        run: npm run db:deploy
 
       - name: Stop Cloud SQL Auth Proxy
         if: always()
