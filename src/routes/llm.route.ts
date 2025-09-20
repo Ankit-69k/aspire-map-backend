@@ -9,4 +9,8 @@ router.post('/resumeUpload', upload.single('file'), (req, res) =>
   llmHandler.parseResume(req, res)
 );
 
+router.post('/careerRecommendations', (req, res) =>
+  llmHandler.generateCareerRecommendations(req, res)
+);
+
 export default router;

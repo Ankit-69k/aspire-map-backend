@@ -38,7 +38,7 @@ model Profile {
   subjects     String[]
   certifications String[]
   projects     String[]
-  internships  String[]
+  experience   String[]
   hobbies      String[]
   resumeUrl    String?   // uploaded resume
   linkedInUrl  String?   // optional

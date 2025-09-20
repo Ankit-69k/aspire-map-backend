@@ -41,6 +41,30 @@ class LLMHandler {
       }
     }
   }
+
+  async generateCareerRecommendations(req: Request, res: Response) {
+    try {
+      const { profileId } = req.body;
+
+      if (!profileId) {
+        throw new ApiError(400, 'profileText is required');
+      }
+
+      const recommendations =
+        await llmService.generateCareerRecommendations(profileId);
+
+      const response = new ApiResponse(
+        200,
+        { recommendations },
+        'Career recommendations generated successfully'
+      );
+      return res.status(200).json(response);
+    } catch (error: any) {
+      logger.error('Error generating career recommendations', error);
+      const err = new ApiError(400, error.message || 'Something went wrong');
+      return res.status(400).json(err);
+    }
+  }
 }
 
 export default new LLMHandler();
