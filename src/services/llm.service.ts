@@ -6,6 +6,7 @@ import logger from '#config/logger.ts';
 import { vectorStore } from '#config/vectorDb.ts';
 import { getCarrierPrompt } from '../prompts/carrier.ts';
 import prisma from '#config/db.ts';
+import { getRoadmapPrompt } from '../prompts/roadmap.ts';
 
 class LLMService {
   private llm: typeof llm;
@@ -65,6 +66,40 @@ class LLMService {
     } catch (error) {
       logger.error('Error generating career recommendations:', error);
       throw new Error('Failed to generate career recommendations');
+    }
+  }
+
+  async generateCareerRoadmap(
+    education: string[],
+    skills: string[],
+    experience: string[],
+    targetCareer: string
+  ) {
+    // 1. Build LLM prompt
+    const prompt = getRoadmapPrompt(
+      education,
+      skills,
+      experience,
+      targetCareer
+    );
+
+    // 2. Call LLM
+    const response = await llm.invoke(prompt);
+    let rawOutput = response.content as string;
+
+    // 3. Clean JSON wrappers
+    rawOutput = rawOutput
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim();
+
+    // 4. Parse JSON safely
+    try {
+      const structuredData = JSON.parse(rawOutput);
+      return structuredData;
+    } catch (err) {
+      logger.error('Failed to parse LLM output:', rawOutput);
+      throw new Error('Invalid JSON returned from LLM');
     }
   }
 

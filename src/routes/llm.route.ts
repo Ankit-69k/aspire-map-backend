@@ -13,4 +13,8 @@ router.post('/careerRecommendations', (req, res) =>
   llmHandler.generateCareerRecommendations(req, res)
 );
 
+router.post('/careerRoadmap', (req, res) =>
+  llmHandler.generateCareerRoadmap(req, res)
+);
+
 export default router;

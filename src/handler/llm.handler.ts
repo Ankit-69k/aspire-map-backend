@@ -65,6 +65,45 @@ class LLMHandler {
       return res.status(400).json(err);
     }
   }
+
+  async generateCareerRoadmap(req: Request, res: Response) {
+    try {
+      const { education, skills, experience, targetCareer } = req.body;
+
+      if (
+        !education ||
+        !Array.isArray(education) ||
+        !skills ||
+        !Array.isArray(skills) ||
+        !experience ||
+        !Array.isArray(experience) ||
+        !targetCareer
+      ) {
+        throw new ApiError(
+          400,
+          'education, skills, experience (arrays) and targetCareer are required'
+        );
+      }
+
+      const roadmap = await llmService.generateCareerRoadmap(
+        education,
+        skills,
+        experience,
+        targetCareer
+      );
+
+      const response = new ApiResponse(
+        200,
+        { roadmap },
+        'Career roadmap generated successfully'
+      );
+      return res.status(200).json(response);
+    } catch (error: any) {
+      logger.error('Error generating career roadmap', error);
+      const err = new ApiError(400, error.message || 'Something went wrong');
+      return res.status(400).json(err);
+    }
+  }
 }
 
 export default new LLMHandler();
