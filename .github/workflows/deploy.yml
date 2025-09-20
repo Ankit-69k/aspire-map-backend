@@ -21,11 +21,6 @@ jobs:
       - name: Install deps
         run: npm ci --legacy-peer-deps
 
-      - name: Prisma migrate
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: npx prisma migrate deploy
-
       - name: Auth to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -33,6 +28,18 @@ jobs:
 
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
+
+      - name: Start Cloud SQL Auth Proxy
+        run: |
+          curl -o cloud_sql_proxy https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64
+          chmod +x cloud_sql_proxy
+          ./cloud_sql_proxy -instances=${{ secrets.GCP_PROJECT }}:us-central1:aspire-map-db=tcp:5432 &
+          sleep 5 # wait for proxy to start
+
+      - name: Prisma migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npx prisma migrate deploy
 
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker us-docker.pkg.dev

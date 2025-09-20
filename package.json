@@ -25,7 +25,8 @@
     "db:generate": "npx prisma generate",
     "db:migrate": "npx prisma migrate dev",
     "db:studio": "npx prisma studio",
-    "db:push": "npx prisma db push"
+    "db:push": "npx prisma db push",
+    "db:deploy": "npx prisma migrate deploy"
   },
   "repository": {
     "type": "git",

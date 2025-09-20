@@ -62,3 +62,4 @@
 {"level":"info","message":"::1 - - [20/Sep/2025:04:28:33 +0000] \"POST /llm/careerRecommendations HTTP/1.1\" 200 4212 \"-\" \"PostmanRuntime/7.46.1\"","service":"user-service"}
 {"level":"info","message":"::1 - - [20/Sep/2025:04:31:00 +0000] \"POST /career/ HTTP/1.1\" 201 732 \"-\" \"PostmanRuntime/7.46.1\"","service":"user-service"}
 {"level":"info","message":"::1 - - [20/Sep/2025:04:31:58 +0000] \"GET /career/c5209af4-e96d-4717-aecb-2da5e5b9678d HTTP/1.1\" 200 735 \"-\" \"PostmanRuntime/7.46.1\"","service":"user-service"}
+{"level":"info","message":"Response sent","service":"user-service"}
