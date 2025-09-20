@@ -1,44 +1,16 @@
-# ---------- Build stage ----------
-FROM node:20-alpine AS build
+# Build stage
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-# Install deps including devDependencies (TypeScript, Prisma, etc.)
 COPY package*.json ./
-RUN npm ci --legacy-peer-deps
-
-# Copy rest of the source
+RUN npm install --legacy-peer-deps
 COPY . .
-
-# Generate Prisma client
-RUN npx prisma generate
-
-# Build TypeScript -> dist/
+RUN npm run db:generate
 RUN npm run build
 
-
-
-
-# ---------- Runtime stage ----------
-FROM node:20-alpine AS runtime
+# Production stage
+FROM node:20-alpine
 WORKDIR /app
-
-RUN apk add --no-cache dumb-init
-RUN addgroup app && adduser -S -G app app
-
-# Copy only runtime deps
-COPY package*.json ./
-RUN npm ci --only=production --legacy-peer-deps && npm cache clean --force
-
-# Copy prisma and built app
-COPY --from=build /app/prisma ./prisma
-COPY --from=build /app/dist ./dist
-
-# Permissions
-RUN chown -R app:app /app
-USER app
-
-ENV PORT=8080
-EXPOSE $PORT
-
-ENTRYPOINT ["dumb-init", "--"]
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+EXPOSE 8080
 CMD ["node", "dist/index.js"]
