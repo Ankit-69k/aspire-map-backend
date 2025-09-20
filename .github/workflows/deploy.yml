@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
   SERVICE_NAME: aspire-map-service
-  REGION: us-central1
+  REGION: asia-south1
   REPOSITORY: aspire-map-repo
 
 jobs:
