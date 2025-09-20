@@ -31,8 +31,11 @@ RUN chown -R app:app /app
 # Switch to non-root user for runtime
 USER app
 
+# Set default PORT (Cloud Run will override this)
+ENV PORT=8080
+
 # Expose the port that Cloud Run expects
-EXPOSE 8080
+EXPOSE $PORT
 
 # Use dumb-init to handle signals properly in containers
 ENTRYPOINT ["dumb-init", "--"]
