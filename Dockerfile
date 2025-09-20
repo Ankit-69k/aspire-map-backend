@@ -1,41 +1,43 @@
-# Set the base image to create the image for the app
-FROM node:20-alpine
+# Use Node 20 Alpine
+FROM node:20-alpine AS build
 
-# Install system dependencies (if needed)
-RUN apk add --no-cache dumb-init
-
-# Create a user with permissions to run the app
-RUN addgroup app && adduser -S -G app app
-
-# Set the working directory to /app
 WORKDIR /app
 
-# Copy package.json and package-lock.json first for better caching
+# Copy package files
 COPY package*.json ./
 
-# Copy Prisma schema for dependency installation and client generation
+# Install dependencies
+RUN npm ci --legacy-peer-deps
+
+# Copy prisma schema and generate client
 COPY prisma ./prisma/
-
-# Install dependencies as root
-RUN npm ci --only=production --legacy-peer-deps && npm cache clean --force
-
-# Generate Prisma Client
 RUN npx prisma generate
 
-# Copy the rest of the application files
+# Copy source files
 COPY . .
 
-# Adjust ownership so the app user can access everything
-RUN chown -R app:app /app
+# Build TypeScript
+RUN npm run build
 
-# Switch to non-root user for runtime
+# --- Production image ---
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy only production deps + build
+COPY package*.json ./
+RUN npm ci --only=production --legacy-peer-deps
+
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/node_modules ./node_modules
+
+# Use non-root user
+RUN addgroup app && adduser -S -G app app
+RUN chown -R app:app /app
 USER app
 
-# Expose the port that Cloud Run expects
 EXPOSE 8080
 
-# Use dumb-init to handle signals properly in containers
-ENTRYPOINT ["dumb-init", "--"]
-
-# Start the app
-CMD ["npm", "start"]
+# Start server
+CMD ["node", "dist/index.js"]
