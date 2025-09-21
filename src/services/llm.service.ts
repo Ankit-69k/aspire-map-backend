@@ -69,10 +69,15 @@ class LLMService {
     }
   }
 
-  async generateCareerRoadmap(profileID: string) {
+  async generateCareerRoadmap(studentId: string) {
+    const student = await prisma.student.findFirst({
+      where: { id: studentId },
+      include: { profiles: true },
+    });
+
     // 1. Fetch profile with relations
     const profile = await prisma.profile.findUnique({
-      where: { id: profileID },
+      where: { id: student?.profiles[0]?.id || '' },
       include: {
         student: {
           include: {
@@ -86,7 +91,7 @@ class LLMService {
     });
 
     if (!profile) {
-      throw new Error(`Profile with id ${profileID} not found`);
+      throw new Error(`Profile with student id ${studentId} not found`);
     }
 
     // Extract fields safely
@@ -102,7 +107,7 @@ class LLMService {
     const targetCareers = profile.careers;
 
     logger.info('Generating roadmap for profile', {
-      profileID,
+      studentId,
       targetCareers,
     });
 

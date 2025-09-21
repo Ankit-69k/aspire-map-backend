@@ -68,13 +68,13 @@ class LLMHandler {
 
   async generateCareerRoadmap(req: Request, res: Response) {
     try {
-      const { profileId } = req.body;
+      const { studentId } = req.body;
 
-      if (!profileId) {
+      if (!studentId) {
         throw new ApiError(400, 'Profile Id required');
       }
 
-      const roadmap = await llmService.generateCareerRoadmap(profileId);
+      const roadmap = await llmService.generateCareerRoadmap(studentId);
 
       const response = new ApiResponse(
         200,
