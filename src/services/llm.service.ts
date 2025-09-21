@@ -14,26 +14,26 @@ class LLMService {
     this.llm = llm;
   }
 
-  async generateCareerRecommendations(profileId: string) {
+  async generateCareerRecommendations(studentId: string) {
     try {
-      // 1. Fetch profile from DB
-      const profile = await prisma.profile.findUnique({
-        where: { id: profileId },
+      const student = await prisma.student.findFirst({
+        where: { id: studentId },
+        include: { profiles: true },
       });
 
-      if (!profile) {
-        throw new Error(`Profile with id ${profileId} not found`);
+      if (!student) {
+        throw new Error(`Profile of student with id ${studentId} not found`);
       }
 
       // 2. Convert structured profile to text
       const profileText = `
-      Education: ${profile.education}
-      Certifications: ${profile.certifications?.join(', ')}
-      Projects: ${profile.projects?.join(', ')}
-      Experience: ${profile.experience?.join(', ')}
-      Hobbies: ${profile.hobbies?.join(', ')}
-      Resume: ${profile.resumeUrl}
-      LinkedIn: ${profile.linkedInUrl}
+      Education: ${student?.profiles[0]?.education}
+      Certifications: ${student?.profiles[0]?.certifications?.join(', ')}
+      Projects: ${student?.profiles[0]?.projects?.join(', ')}
+      Experience: ${student?.profiles[0]?.experience?.join(', ')}
+      Hobbies: ${student?.profiles[0]?.hobbies?.join(', ')}
+      Resume: ${student?.profiles[0]?.resumeUrl}
+      LinkedIn: ${student?.profiles[0]?.linkedInUrl}
     `;
 
       // 3. Similarity search

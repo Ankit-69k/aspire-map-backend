@@ -44,14 +44,14 @@ class LLMHandler {
 
   async generateCareerRecommendations(req: Request, res: Response) {
     try {
-      const { profileId } = req.body;
+      const { studentId } = req.body;
 
-      if (!profileId) {
+      if (!studentId) {
         throw new ApiError(400, 'profileText is required');
       }
 
       const recommendations =
-        await llmService.generateCareerRecommendations(profileId);
+        await llmService.generateCareerRecommendations(studentId);
 
       const response = new ApiResponse(
         200,
