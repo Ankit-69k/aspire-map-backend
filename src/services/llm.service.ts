@@ -69,31 +69,62 @@ class LLMService {
     }
   }
 
-  async generateCareerRoadmap(
-    education: string[],
-    skills: string[],
-    experience: string[],
-    targetCareer: string
-  ) {
-    // 1. Build LLM prompt
+  async generateCareerRoadmap(profileID: string) {
+    // 1. Fetch profile with relations
+    const profile = await prisma.profile.findUnique({
+      where: { id: profileID },
+      include: {
+        student: {
+          include: {
+            skills: { include: { skill: true } }, // fetch actual skill details
+          },
+        },
+        careers: {
+          include: { career: true }, // get linked careers
+        },
+      },
+    });
+
+    if (!profile) {
+      throw new Error(`Profile with id ${profileID} not found`);
+    }
+
+    // Extract fields safely
+    const education = profile.education ?? 'Not specified';
+
+    const skills = profile.student.skills.map(s => s.skill.name) ?? [];
+
+    const experience =
+      profile.experience && profile.experience.length > 0
+        ? profile.experience.join(', ')
+        : 'Not specified';
+
+    const targetCareers = profile.careers;
+
+    logger.info('Generating roadmap for profile', {
+      profileID,
+      targetCareers,
+    });
+
+    // 2. Build LLM prompt
     const prompt = getRoadmapPrompt(
       education,
       skills,
       experience,
-      targetCareer
+      targetCareers
     );
 
-    // 2. Call LLM
+    // 3. Call LLM
     const response = await llm.invoke(prompt);
     let rawOutput = response.content as string;
 
-    // 3. Clean JSON wrappers
+    // 4. Clean JSON wrappers
     rawOutput = rawOutput
       .replace(/```json/g, '')
       .replace(/```/g, '')
       .trim();
 
-    // 4. Parse JSON safely
+    // 5. Parse JSON safely
     try {
       const structuredData = JSON.parse(rawOutput);
       return structuredData;

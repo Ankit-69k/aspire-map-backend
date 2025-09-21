@@ -68,29 +68,13 @@ class LLMHandler {
 
   async generateCareerRoadmap(req: Request, res: Response) {
     try {
-      const { education, skills, experience, targetCareer } = req.body;
+      const { profileId } = req.body;
 
-      if (
-        !education ||
-        !Array.isArray(education) ||
-        !skills ||
-        !Array.isArray(skills) ||
-        !experience ||
-        !Array.isArray(experience) ||
-        !targetCareer
-      ) {
-        throw new ApiError(
-          400,
-          'education, skills, experience (arrays) and targetCareer are required'
-        );
+      if (!profileId) {
+        throw new ApiError(400, 'Profile Id required');
       }
 
-      const roadmap = await llmService.generateCareerRoadmap(
-        education,
-        skills,
-        experience,
-        targetCareer
-      );
+      const roadmap = await llmService.generateCareerRoadmap(profileId);
 
       const response = new ApiResponse(
         200,

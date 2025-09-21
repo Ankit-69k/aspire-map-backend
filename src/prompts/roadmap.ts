@@ -1,8 +1,8 @@
 export const getRoadmapPrompt = (
-  education: string[],
-  skills: string[],
-  experience: string[],
-  targetCareer: string
+  education: string[] | string,
+  skills: string[] | string,
+  experience: string[] | string,
+  targetCareer: any
 ) => {
   const prompt = `
     Create a personalized career roadmap for:
