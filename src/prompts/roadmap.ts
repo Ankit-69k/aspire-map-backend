@@ -1,12 +1,9 @@
-import logger from '../config/logger';
-
 export const getRoadmapPrompt = (
   education: string[] | string,
   skills: string[] | string,
   experience: string[] | string,
   targetCareer: any
 ) => {
-  logger.info('Generating roadmap prompt with:', targetCareer);
   const prompt = `
     Create a personalized career roadmap for:
 
