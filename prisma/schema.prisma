@@ -34,7 +34,7 @@ model Profile {
   id           String   @id @default(uuid())
   studentId    String
   education    String?
-  subjects     String[]
+  skills     String[]
   certifications String[]
   projects     String[]
   experience   String[]
