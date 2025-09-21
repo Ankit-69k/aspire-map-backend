@@ -3,7 +3,7 @@ import prisma from '../config/db.js';
 
 class CareerService {
   async createCareer(
-    profileId: string,
+    studentId: string,
     careerData: {
       title: string;
       description: string;
@@ -22,10 +22,15 @@ class CareerService {
         },
       });
 
+      const profile = await prisma.profile.findFirst({
+        where: { studentId },
+        select: { id: true },
+      });
+
       // Step 2: Link it with the profile
       await prisma.profileCareer.create({
         data: {
-          profileId: profileId,
+          profileId: profile?.id || '',
           careerId: career.id,
         },
       });

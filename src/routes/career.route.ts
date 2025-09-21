@@ -4,6 +4,6 @@ import { Router } from 'express';
 const router = Router();
 
 router.post('/', careerHandler.create);
-router.get('/:profileId', careerHandler.getByProfile);
+router.get('/:studentId', careerHandler.getByProfile);
 
 export default router;

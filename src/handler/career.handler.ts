@@ -7,12 +7,12 @@ import logger from '../config/logger.js';
 class CareerHandler {
   async create(req: Request, res: Response) {
     try {
-      const { profileId, careerData } = req.body;
-      if (!profileId || !careerData) {
+      const { studentId, careerData } = req.body;
+      if (!studentId || !careerData) {
         const err = new ApiError(400, 'profileId and careerData are required');
         return res.status(400).json(err);
       }
-      const career = await careerService.createCareer(profileId, careerData);
+      const career = await careerService.createCareer(studentId, careerData);
       const response = new ApiResponse(
         201,
         career,
