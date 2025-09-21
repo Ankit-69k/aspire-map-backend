@@ -23,6 +23,27 @@ class StudentHandler {
     }
   }
 
+  async login(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+      const student = await studentService.getStudentByEmailAndPassword(
+        email,
+        password
+      );
+      const response = new ApiResponse(
+        200,
+        student,
+        'Student logged in successfully'
+      );
+      logger.info('Student logged in successfully', { studentId: student.id });
+      res.status(200).json(response);
+    } catch (error: any) {
+      logger.error('Error logging in student', error);
+      const err = new ApiError(400, 'Something went wrong', error.errors || []);
+      res.status(400).json(err);
+    }
+  }
+
   async get(req: Request, res: Response) {
     try {
       const { id } = req.params;

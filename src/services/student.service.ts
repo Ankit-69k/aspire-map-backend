@@ -28,6 +28,23 @@ class StudentService {
     return safeStudent;
   }
 
+  async getStudentByEmailAndPassword(email: string, password: string) {
+    const student = await prisma.student.findUnique({
+      where: { email },
+      include: { profiles: true, skills: true, roadmaps: true },
+    });
+    if (!student) {
+      throw new Error('Invalid email or password');
+    }
+    const isPasswordValid = await bcrypt.compare(password, student.password);
+    if (!isPasswordValid) {
+      throw new Error('Invalid email or password');
+    }
+    // Do not return password
+    const { password: _, ...safeStudent } = student;
+    return safeStudent;
+  }
+
   async getStudentById(id: string) {
     return prisma.student.findUnique({
       where: { id },
