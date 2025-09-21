@@ -133,6 +133,9 @@ class ProfileService {
   /**
    * Get complete profile with skills
    */
+  /**
+   * Get complete profile with skills
+   */
   async getCompleteProfile(studentId: string) {
     try {
       const profile = await prisma.profile.findFirst({
@@ -150,10 +153,16 @@ class ProfileService {
         },
       });
 
+      if (!profile) {
+        throw new Error(`Profile not found for studentId: ${studentId}`);
+      }
+
       return profile;
     } catch (error) {
       logger.error('Error fetching complete profile:', error);
-      throw new Error('Failed to fetch profile');
+      throw new Error(
+        error instanceof Error ? error.message : 'Failed to fetch profile'
+      );
     }
   }
 
