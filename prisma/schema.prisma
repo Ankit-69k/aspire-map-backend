@@ -33,7 +33,7 @@ model Student {
 model Profile {
   id           String   @id @default(uuid())
   studentId    String
-  education    String?
+  education    String[]
   skills     String[]
   certifications String[]
   projects     String[]

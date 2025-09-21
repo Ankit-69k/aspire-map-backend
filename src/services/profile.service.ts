@@ -3,22 +3,11 @@ import prisma from '../config/db.js';
 import { vectorStore } from '../config/vectorDb.js';
 import * as fs from 'fs/promises';
 
-interface ProfileData {
-  education?: string;
-  subjects?: string[];
-  certifications?: string[];
-  projects?: string[];
-  internships?: string[];
-  hobbies?: string[];
-  resumeUrl?: string;
-  linkedInUrl?: string;
-}
-
 class ProfileService {
   /**
    * Create a new profile for a student
    */
-  async createProfile(studentId: string, profileData: ProfileData) {
+  async createProfile(studentId: string, profileData: any) {
     try {
       // Validate student exists
       const student = await prisma.student.findUnique({
@@ -34,8 +23,7 @@ class ProfileService {
         where: { studentId },
       });
 
-      const profile = await prisma.profile.update({
-        where: { id: existingProfile ? existingProfile.id : '' },
+      const profile = await prisma.profile.create({
         data: {
           ...profileData,
           student: { connect: { id: studentId } },
@@ -60,7 +48,7 @@ class ProfileService {
   /**
    * Update an existing profile
    */
-  async updateProfile(studentId: string, profileData: Partial<ProfileData>) {
+  async updateProfile(studentId: string, profileData: any) {
     try {
       const existingProfile = await prisma.profile.findFirst({
         where: { studentId },
