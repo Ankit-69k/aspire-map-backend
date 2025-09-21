@@ -13,10 +13,19 @@ import {
 
 const app = express();
 
-app.use(helmet());
+app.use(helmet.referrerPolicy({ policy: 'origin' }));
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://aspire-map-frontend.vercel.app',
+];
+
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://aspire-map-frontend.vercel.app'],
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow Postman / curl requests
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error('CORS not allowed for this origin'), false);
+    },
     credentials: true,
   })
 );
