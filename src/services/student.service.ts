@@ -18,9 +18,7 @@ class StudentService {
         name,
         email,
         password: hashedPassword,
-        profiles: { create: {} }, // create empty profile
       },
-      include: { profiles: true },
     });
 
     // Do not return password

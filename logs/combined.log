@@ -77,3 +77,14 @@
 {"level":"info","message":"Profile created successfully","service":"user-service","studentId":"c8fcdefa-d099-44d5-a8d3-63f75c74ea2b"}
 {"level":"info","message":"127.0.0.1 - - [21/Sep/2025:10:52:46 +0000] \"POST /profile HTTP/1.1\" 201 1203 \"-\" \"PostmanRuntime/7.46.1\"","service":"user-service"}
 {"level":"info","message":"Profile added to vector store for student: c8fcdefa-d099-44d5-a8d3-63f75c74ea2b","service":"user-service"}
+{"level":"info","message":"Profile retrieved successfully","service":"user-service","studentId":"c8fcdefa-d099-44d5-a8d3-63f75c74ea2b"}
+{"level":"info","message":"127.0.0.1 - - [21/Sep/2025:11:31:57 +0000] \"GET /profile/c8fcdefa-d099-44d5-a8d3-63f75c74ea2b HTTP/1.1\" 200 701 \"-\" \"PostmanRuntime/7.46.1\"","service":"user-service"}
+{"level":"info","message":"Student created successfully","service":"user-service","studentId":"4470c013-6d5c-431c-8692-fea148250a6f"}
+{"level":"info","message":"127.0.0.1 - - [21/Sep/2025:11:32:20 +0000] \"POST /student/ HTTP/1.1\" 201 612 \"-\" \"PostmanRuntime/7.46.1\"","service":"user-service"}
+{"level":"info","message":"Profile retrieved successfully","service":"user-service","studentId":"4470c013-6d5c-431c-8692-fea148250a6f"}
+{"level":"info","message":"127.0.0.1 - - [21/Sep/2025:11:32:47 +0000] \"GET /profile/4470c013-6d5c-431c-8692-fea148250a6f HTTP/1.1\" 200 697 \"-\" \"PostmanRuntime/7.46.1\"","service":"user-service"}
+{"level":"info","message":"Student created successfully","service":"user-service","studentId":"0e892523-ae9c-459e-bb74-722198d0f681"}
+{"level":"info","message":"127.0.0.1 - - [21/Sep/2025:11:34:21 +0000] \"POST /student/ HTTP/1.1\" 201 298 \"-\" \"PostmanRuntime/7.46.1\"","service":"user-service"}
+{"level":"error","message":"Error fetching complete profile: Profile not found for studentId: 0e892523-ae9c-459e-bb74-722198d0f681","service":"user-service","stack":"Error: Profile not found for studentId: 0e892523-ae9c-459e-bb74-722198d0f681\n    at ProfileService.getCompleteProfile (/home/ankitkr/hackathon/aspire-map-backend/src/services/profile.service.ts:157:15)\n    at async get (/home/ankitkr/hackathon/aspire-map-backend/src/handler/profile.handler.ts:51:23)"}
+{"level":"error","message":"Error retrieving profile Profile not found for studentId: 0e892523-ae9c-459e-bb74-722198d0f681","service":"user-service","stack":"Error: Profile not found for studentId: 0e892523-ae9c-459e-bb74-722198d0f681\n    at ProfileService.getCompleteProfile (/home/ankitkr/hackathon/aspire-map-backend/src/services/profile.service.ts:163:13)\n    at async get (/home/ankitkr/hackathon/aspire-map-backend/src/handler/profile.handler.ts:51:23)"}
+{"level":"info","message":"127.0.0.1 - - [21/Sep/2025:11:34:37 +0000] \"GET /profile/0e892523-ae9c-459e-bb74-722198d0f681 HTTP/1.1\" 400 114 \"-\" \"PostmanRuntime/7.46.1\"","service":"user-service"}
