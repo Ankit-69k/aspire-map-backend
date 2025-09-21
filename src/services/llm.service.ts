@@ -90,10 +90,14 @@ class LLMService {
       },
     });
 
+    const career = await prisma.profileCareer.findFirst({
+      where: { profileId: profile?.id || '' },
+      include: { career: true },
+    });
+
     if (!profile) {
       throw new Error(`Profile with student id ${studentId} not found`);
     }
-
     // Extract fields safely
     const education = profile.education ?? 'Not specified';
 
@@ -104,7 +108,9 @@ class LLMService {
         ? profile.experience.join(', ')
         : 'Not specified';
 
-    const targetCareers = profile.careers;
+    const targetCareers = career?.career;
+
+    logger.info('career', targetCareers);
 
     logger.info('Generating roadmap for profile', {
       studentId,
@@ -123,6 +129,8 @@ class LLMService {
     const response = await llm.invoke(prompt);
     let rawOutput = response.content as string;
 
+    logger.info('LLM response received for roadmap generation', response);
+
     // 4. Clean JSON wrappers
     rawOutput = rawOutput
       .replace(/```json/g, '')
@@ -132,6 +140,7 @@ class LLMService {
     // 5. Parse JSON safely
     try {
       const structuredData = JSON.parse(rawOutput);
+
       return structuredData;
     } catch (err) {
       logger.error('Failed to parse LLM output:', rawOutput);

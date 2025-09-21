@@ -1,18 +1,22 @@
+import logger from '../config/logger';
+
 export const getRoadmapPrompt = (
   education: string[] | string,
   skills: string[] | string,
   experience: string[] | string,
   targetCareer: any
 ) => {
+  logger.info('Generating roadmap prompt with:', targetCareer);
   const prompt = `
     Create a personalized career roadmap for:
 
     Current Profile:
-    - Education: ${education}
-    - Skills: ${skills}
-    - Experience: ${experience}
+      - Education: ${Array.isArray(education) ? education.join(', ') : education}
+      - Skills: ${Array.isArray(skills) ? skills.join(', ') : skills}
+      - Experience: ${Array.isArray(experience) ? experience.join(', ') : experience}
 
-    Target Career: ${targetCareer}
+    Target Career: ${JSON.stringify(targetCareer, null, 2)}
+
 
     Instructions:
     1. Do NOT use monthly timelines — instead, break down into ordered steps toward employability.
